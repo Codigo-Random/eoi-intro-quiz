@@ -34,6 +34,7 @@ let currentQuestion = 0;
 
 const title = document.getElementById("question");
 const answerBox = document.getElementById("answerBox");
+const infoQuestion = document.getElementById("infoQuestion");
 
 function printQuestion() {
   // Pintar el titulo de la pregunta
@@ -49,19 +50,41 @@ function printQuestion() {
   answerBox.innerHTML = "";
 
   // Se generan los botones de respuesta
-  questionAnswers.forEach((answer) => {
+  questionAnswers.forEach((answer, index) => {
     answerBox.innerHTML += `<button
-            class="bg-slate-200 rounded-lg p-2.5 hover:bg-slate-800 hover:text-white transition-all"
+            id="btn${index}"
+            onclick="checkAnswer('${answer}', 'btn${index}')"
+            class="bg-slate-200 hover:bg-slate-800 hover:text-white rounded-lg p-2.5 transition-all"
           >
             ${answer}
           </button>`;
   });
+
+  printInfoQuestion();
+}
+
+function checkAnswer(answer, btnId) {
+  const currentCorrectAnswer = questions[currentQuestion].correctAnswer;
+
+  // if else en operador ternario
+  const bgColor =
+    answer == currentCorrectAnswer ? "bg-green-500" : "bg-red-500";
+
+  // aqui eliminamos el color gris y añadimos el color que toque según respuesta
+  document.getElementById(btnId).classList.remove("bg-slate-200");
+  document.getElementById(btnId).classList.add(bgColor);
 }
 
 function nextQuestion() {
   currentQuestion++;
   console.log(currentQuestion);
   printQuestion();
+}
+
+function printInfoQuestion() {
+  infoQuestion.innerText = `Pregunta ${currentQuestion + 1} de ${
+    questions.length
+  }`;
 }
 
 printQuestion();

@@ -7,11 +7,11 @@
     <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp,container-queries"></script>
   </head>
   <body
-    class="h-screen flex items-center bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-pink-500 via-red-500 to-yellow-500"
+    class="h-screen min-h-[600px] flex items-center bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-pink-500 via-red-500 to-yellow-500"
   >
     <main class="bg-white w-2/3 md:max-w-md mx-auto rounded-lg shadow-xl">
       <header class="flex items-center justify-between py-4 px-6 border-b">
-        <h1 class="font-bold text-xl">Quiz de Geografia</h1>
+        <h1 class="font-bold text-xl">Quiz de Geografía</h1>
 
         <div
           class="flex gap-2 bg-pink-200 rounded-lg px-2 py-1 text-pink-700 border border-pink-500"
@@ -28,7 +28,7 @@
       </section>
 
       <footer class="flex justify-between items-center px-6 py-4 border-t">
-        <p class="font-semibold">Pregunta 1 de 10</p>
+        <p id="infoQuestion" class="font-semibold">Pregunta 1 de 10</p>
 
         <button
           onclick="nextQuestion()"
