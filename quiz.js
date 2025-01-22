@@ -33,10 +33,16 @@ const questions = [
 let currentQuestion = 0;
 let isAnswered = false;
 
+const totalTimer = 30;
+let timer = 30;
+let intervalID = setInterval(countdown, 1000);
+
 const title = document.getElementById("question");
 const answerBox = document.getElementById("answerBox");
 const infoQuestion = document.getElementById("infoQuestion");
 const btnNext = document.getElementById("btnNext");
+const txtTimer = document.getElementById("txtTimer");
+const progressBar = document.getElementById("progressBar");
 
 function printQuestion() {
   // Pintar el titulo de la pregunta
@@ -94,6 +100,11 @@ function nextQuestion() {
     isAnswered = false;
     console.log(currentQuestion);
     printQuestion();
+
+    // Reinicializamos el contador (timer a 30s + 1)
+    timer = totalTimer + 1;
+    // Arrancamos de nuevo el contador
+    intervalID = setInterval(countdown, 1000);
   }
 }
 
@@ -104,3 +115,36 @@ function printInfoQuestion() {
 }
 
 printQuestion();
+
+function countdown() {
+  timer -= 1;
+  console.log("timer", timer);
+  txtTimer.innerText = `${timer}`;
+
+  console.log("Se ha respondido? => ", isAnswered);
+
+  // progressBar.classList.remove("opacity-0");
+  // progressBar.classList.add("opacity-100");
+  progressBar.classList.replace("opacity-0", "opacity-100");
+
+  const widthPercent = getPercent(timer);
+  progressBar.style.width = `${widthPercent}%`;
+
+  if (isAnswered || timer == 0) {
+    // Parar
+    clearInterval(intervalID);
+
+    // Aunque no haya contestado, decimos que si, para que no pueda marcar ninguna respuesta
+    isAnswered = true;
+    btnNext.disabled = false;
+
+    if (timer == 0) {
+      alert("Tiempo finalizado");
+    }
+  }
+}
+
+function getPercent(currentTime) {
+  return (currentTime * 100) / totalTimer;
+  // return ((totalTimer - currentTime) * 100) / totalTimer;
+}
