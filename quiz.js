@@ -33,9 +33,13 @@ const questions = [
 let currentQuestion = 0;
 let isAnswered = false;
 
+// Timer
 const totalTimer = 30;
 let timer = 30;
 let intervalID = setInterval(countdown, 1000);
+
+// Resultados
+let score = 0;
 
 const title = document.getElementById("question");
 const answerBox = document.getElementById("answerBox");
@@ -83,6 +87,12 @@ function checkAnswer(answer, btnId) {
     btnNext.disabled = false;
 
     const currentCorrectAnswer = questions[currentQuestion].correctAnswer;
+    const isCorrect = answer == currentCorrectAnswer;
+    if (isCorrect) {
+      score += 10;
+      localStorage.setItem("score", score);
+    }
+    console.log("SCORE", score);
 
     // if else en operador ternario
     const bgColor =
@@ -97,6 +107,12 @@ function checkAnswer(answer, btnId) {
 function nextQuestion() {
   if (isAnswered) {
     currentQuestion++;
+
+    console.log("currentQuestion");
+    if (currentQuestion == questions.length) {
+      window.location = "/ranking.html";
+    }
+
     isAnswered = false;
     console.log(currentQuestion);
     printQuestion();
