@@ -31,10 +31,12 @@ const questions = [
 ];
 
 let currentQuestion = 0;
+let isAnswered = false;
 
 const title = document.getElementById("question");
 const answerBox = document.getElementById("answerBox");
 const infoQuestion = document.getElementById("infoQuestion");
+const btnNext = document.getElementById("btnNext");
 
 function printQuestion() {
   // Pintar el titulo de la pregunta
@@ -60,25 +62,39 @@ function printQuestion() {
           </button>`;
   });
 
+  // El botón de siguiente se des-habilita
+  btnNext.disabled = true;
+
   printInfoQuestion();
 }
 
 function checkAnswer(answer, btnId) {
-  const currentCorrectAnswer = questions[currentQuestion].correctAnswer;
+  if (!isAnswered) {
+    // Cada vez que se pulse y no ha pulsado antes
+    isAnswered = true;
 
-  // if else en operador ternario
-  const bgColor =
-    answer == currentCorrectAnswer ? "bg-green-500" : "bg-red-500";
+    // El botón de siguiente se habilita
+    btnNext.disabled = false;
 
-  // aqui eliminamos el color gris y añadimos el color que toque según respuesta
-  document.getElementById(btnId).classList.remove("bg-slate-200");
-  document.getElementById(btnId).classList.add(bgColor);
+    const currentCorrectAnswer = questions[currentQuestion].correctAnswer;
+
+    // if else en operador ternario
+    const bgColor =
+      answer == currentCorrectAnswer ? "bg-green-500" : "bg-red-500";
+
+    // aqui eliminamos el color gris y añadimos el color que toque según respuesta
+    document.getElementById(btnId).classList.remove("bg-slate-200");
+    document.getElementById(btnId).classList.add(bgColor);
+  }
 }
 
 function nextQuestion() {
-  currentQuestion++;
-  console.log(currentQuestion);
-  printQuestion();
+  if (isAnswered) {
+    currentQuestion++;
+    isAnswered = false;
+    console.log(currentQuestion);
+    printQuestion();
+  }
 }
 
 function printInfoQuestion() {
