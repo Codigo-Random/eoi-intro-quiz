@@ -1,34 +1,27 @@
-const questions = [
-  {
-    id: 1,
-    question: "¿Dónde se encuentra el monte Everest?",
-    answers: ["Nepal", "China", "India", "Bhutan"],
-    correctAnswer: "Nepal",
+let questions = [];
+
+const requestOptions = {
+  method: "GET",
+  headers: {
+    apikey:
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlyaWxlb2ZkamtjbXNwdmVibnFxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzQyNzk1MDYsImV4cCI6MjA0OTg1NTUwNn0.MZx5Cpcw6aqM7A9Sc8_VC6HWnSKQ0SYkWpTqUAI0-Pg",
   },
-  {
-    id: 2,
-    question: "¿A qué provincia pertenece Sierra Nevada?",
-    answers: ["Granada", "Almería", "Málaga", "Jaén"],
-    correctAnswer: "Granada",
-  },
-  {
-    id: 3,
-    question: "¿Cómo se llama el conjunto de montañas más grande de España",
-    answers: [
-      "Sistema Central",
-      "Sistema Ibérico",
-      "Sistema Penibético",
-      "Sistema Bético",
-    ],
-    correctAnswer: "Sistema Central",
-  },
-  {
-    id: 4,
-    question: "¿Cómo se llama el río más largo de España?",
-    answers: ["Ebro", "Duero", "Tajo", "Guadiana"],
-    correctAnswer: "Ebro",
-  },
-];
+};
+
+fetch(
+  "https://irileofdjkcmspvebnqq.supabase.co/rest/v1/questions",
+  requestOptions
+)
+  .then((response) => response.json()) // convierte el resultado en un objeto JSON
+  .then((result) => {
+    questions = result.sort(() => Math.random() - 0.5); // desordena las preguntas
+    printQuestion();
+    intervalID = setInterval(countdown, 1000);
+  })
+  .catch((error) => {
+    console.log("VA MAL");
+    console.error(error);
+  });
 
 let currentQuestion = 0;
 let isAnswered = false;
@@ -36,7 +29,7 @@ let isAnswered = false;
 // Timer
 const totalTimer = 30;
 let timer = 30;
-let intervalID = setInterval(countdown, 1000);
+let intervalID;
 
 // Resultados
 let score = 0;
@@ -89,7 +82,7 @@ function checkAnswer(answer, btnId) {
     const currentCorrectAnswer = questions[currentQuestion].correctAnswer;
     const isCorrect = answer == currentCorrectAnswer;
     if (isCorrect) {
-      score += 10;
+      score += timer;
       localStorage.setItem("score", score);
     }
     console.log("SCORE", score);
@@ -109,6 +102,8 @@ function nextQuestion() {
     currentQuestion++;
 
     console.log("currentQuestion");
+
+    // 4 y total de 4 preguntas == true
     if (currentQuestion == questions.length) {
       window.location = "/ranking.html";
     }
@@ -129,8 +124,6 @@ function printInfoQuestion() {
     questions.length
   }`;
 }
-
-printQuestion();
 
 function countdown() {
   timer -= 1;
@@ -155,7 +148,7 @@ function countdown() {
     btnNext.disabled = false;
 
     if (timer == 0) {
-      alert("Tiempo finalizado");
+      // alert("Tiempo finalizado");
     }
   }
 }
